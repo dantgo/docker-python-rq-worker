@@ -13,16 +13,18 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
 RUN apt-get -q update >/dev/null \
-    && apt-get install -y python3 python3-dev curl build-essential git supervisor \
-    && curl https://bootstrap.pypa.io/get-pip.py | python3 \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get -q update >/dev/null \
+    && apt-get install -y python3.10 python3.10-dev curl build-essential git supervisor \
+    && curl https://bootstrap.pypa.io/get-pip.py | python3.10 \
     && curl https://bootstrap.pypa.io/get-pip.py | python \
-    && pip3 install rq \
+    && pip3.10 install rq \
     && pip install Jinja2 \
     # Cleanup
     && apt-get clean autoclean \
     && apt-get autoremove --yes \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/ 
-
 
 COPY start_rq_worker.sh /usr/bin/start_rq_worker.sh
 COPY etc_supervisor_confd_rqworker.conf.j2 /etc/supervisor/conf.d/rqworker.conf.j2
