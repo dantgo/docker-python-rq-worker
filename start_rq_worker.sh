@@ -14,6 +14,7 @@ if [ ${PIP_REQUIREMENTS} != 'none' ]; then
     pip3 install -r ${PIP_REQUIREMENTS}
 fi
 
-cat /etc/supervisor/conf.d/rqworker.conf.j2 | python -c 'import os;import sys; import jinja2; sys.stdout.write(jinja2.Template(sys.stdin.read()).render(env=os.environ))' > /etc/supervisor/conf.d/rqworker.conf
+cat /etc/supervisor/conf.d/rqworker.conf.j2 | python3 -c 'import os; import sys; import jinja2; sys.stdout.write(jinja2.Template(sys.stdin.read()).render(env=os.environ))' > /etc/supervisor/conf.d/rqworker.conf
+
 
 supervisord -n
