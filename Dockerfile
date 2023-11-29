@@ -12,15 +12,12 @@ ENV PIP_REQUIREMENTS=none
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
+# Install Python 3.10
 RUN apt-get -q update >/dev/null \
-    && apt-get install -y software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get -q update >/dev/null \
     && apt-get install -y python3.10 python3.10-dev curl build-essential git supervisor \
     && curl https://bootstrap.pypa.io/get-pip.py | python3.10 \
-    && curl https://bootstrap.pypa.io/get-pip.py | python \
     && pip3.10 install rq \
-    && pip install Jinja2 \
+    && pip3 install Jinja2 \
     # Cleanup
     && apt-get clean autoclean \
     && apt-get autoremove --yes \
@@ -31,3 +28,4 @@ COPY etc_supervisor_confd_rqworker.conf.j2 /etc/supervisor/conf.d/rqworker.conf.
 VOLUME ["/pythonimports"]
 
 ENTRYPOINT ["/usr/bin/start_rq_worker.sh"]
+
